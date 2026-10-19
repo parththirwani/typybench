@@ -1,97 +1,118 @@
-# TypyBench: Evaluating LLM Type Inference for Untyped Python Repositories
+# TypyBench experiments on cost-aware code memory
 
+This repository contains the original [TypyBench](https://github.com/typybench/typybench) benchmark and experiments on when a language model should retrieve code memory during type inference.
 
-TypyBench contains 50 well-typed Python repositories, designed to evaluate LLMs' ability to infer types for untyped Python repositories. TypyBench features two novel metrics:
+The experiment asks a narrow question:
 
-- TypeSim: captures nuanced semantic relationships between predicted and ground truth types.
-- TypeCheck: assesses type consistency across codebases.
+> When a model infers a function's return type, does the extra context from the callee justify its token cost?
 
-![overview](assets/overview.png)
+The current results compare four policies on a repository-disjoint cohort of 151 functions. The static-analysis-plus-selective-memory policy matched the always-memory policy on exact return-type accuracy while using 33.71% fewer input tokens on the 116 functions with evaluable references.
 
-## Dataset Download Link
+## Four policies
 
-Please check the [this link](https://drive.google.com/file/d/1zeF658KElobutFseLgW1FyxXm-bVKlej/view?usp=sharing) to download the dataset for evaluation.
+The experiment uses the same `gpt-5.4-mini` model and the same bounded return-memory summary for the model-based arms.
 
-## Requirements
+1. **No memory.** The model receives the caller, import, and target symbol.
+2. **Always memory.** The model receives the same prompt plus a summary of the callee's return expressions and related assignments.
+3. **Source-signal trigger.** A deterministic rule chooses between no memory and memory. It requests memory when the summary contains an assignment, `yield`, `cast(`, or a constructor-style return.
+4. **Static analysis plus selective memory.** A conservative AST rule answers directly when the source gives an unambiguous return type. For the remaining cases, a type-bearing source-signal rule chooses no memory or retrieved memory.
 
-* Docker Engine
+The trigger policies do not use a trained decision model. They make the memory decision from source code before the expensive model request. A static answer uses no cloud-model call.
 
-## Evaluation
+## Results
 
-When LLM generates predictions, arrange the prediction in the following structure:
+The table below uses the v6 repository cohort: DB-GPT, phidata, taipy, gpt-pilot, LLaMA-Factory, and Pillow. The cohort contained 151 selected functions, of which 116 had a unique annotated reference.
 
+| Policy | Exact matches / 116 | Accuracy | Input tokens / 151 | Total tokens | Input saving vs always memory |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| No memory | 83 | 71.6% | 57,333 | 59,788 | 14.95% |
+| Always memory | 87 | 75.0% | 67,413 | 69,119 | 0% |
+| Source-signal trigger | 83 | 71.6% | 62,824 | 65,034 | 6.81% |
+| Static analysis plus selective memory | 87 | 75.0% | 44,690 | 46,379 | 33.71% |
+
+The static policy produced 41 direct answers. Twenty-eight of those had evaluable references, and all 28 were exact. It selected no memory for 77 functions and retrieved memory for 33.
+
+The 33.71% saving is a deployment-cost estimate. During evaluation, the experiment ran both model arms for every case so that it could measure counterfactual accuracy and token use. Local AST parsing and source indexing are not included in the cloud-token totals.
+
+The four-case accuracy gain over no memory was not statistically significant in this cohort, with a two-sided exact McNemar p-value of 0.344. Matching the always-memory total does not establish formal equivalence. The study also does not measure official TypyBench TypeSim or TypeCheck scores, wall-clock latency, or coding-agent repair quality.
+
+## Earlier source-signal result
+
+An earlier repository-disjoint study used the source-signal trigger without the static-answer branch. It achieved 84 exact matches out of 110 evaluable functions, compared with 73 for no memory and 86 for always memory. It reduced input tokens by 5.76% against always memory. This result came from a different repository cohort and should not be pooled with the v6 numbers.
+
+## Repository layout
+
+```text
+src/typybench/                       Original TypeSim and TypeCheck code
+experiments/parameter_context/       Parameter-context experiments
+experiments/return_context/          Return-context triggers and reports
+experiments/error_to_context/        Type-error and repair experiments
 ```
+
+The main reports are:
+
+- [Four-policy comparison](experiments/return_context/FOUR_POLICY_COMPARISON_REPORT.md)
+- [v6 selective-memory report](experiments/return_context/DECISION_TRIGGER_V6_REPORT.md)
+- [v4 source-signal report](experiments/return_context/DECISION_TRIGGER_V4_REPORT.md)
+- [v6 protocol](experiments/return_context/TRIGGER_V6_PROTOCOL.md)
+
+## Reproducing the return-context analysis
+
+The frozen v6 run stores its selection, predictions, reference extraction record, and scores under `experiments/return_context/runs/`. Run outputs are ignored by Git because they contain large generated artifacts. The source-only selector and scoring scripts are tracked in `experiments/return_context/`.
+
+The four-policy table can be reproduced from the frozen v6 artifacts by applying the saved v3 source-signal rule to the v6 run:
+
+```bash
+python -c 'from pathlib import Path; from experiments.return_context.analyze_v5_development import analyze; from experiments.return_context.trigger_v3 import choose_arm; import json; print(json.dumps(analyze(Path("experiments/return_context/runs/trigger_v6_holdout_20261020"), chooser=choose_arm), indent=2))'
+```
+
+Run the unit tests with the pinned environment:
+
+```bash
+.venv/bin/python -m unittest discover -s experiments -p 'test_*.py'
+```
+
+The experiment suite currently passes 96 tests with the pinned dependencies. The system Python environment may report a mypy-version failure if it uses mypy 1.15 instead of the pinned 1.11.1.
+
+## Original TypyBench benchmark
+
+TypyBench contains 50 well-typed Python repositories for evaluating type inference in untyped Python repositories. It provides two metrics:
+
+- **TypeSim**, which measures semantic similarity between predicted and reference types.
+- **TypeCheck**, which measures type consistency across a repository.
+
+Download the dataset from the [TypyBench dataset link](https://drive.google.com/file/d/1zeF658KElobutFseLgW1FyxXm-bVKlej/view?usp=sharing).
+
+For the original benchmark, arrange predictions as follows:
+
+```text
 predictions/
   agents/
   appworld/
   AutoGPT/
-  ...
 ```
 
-Then, use the following command to execute the evaluation of a predicted repo:
+Then run:
 
-```shell
-# To evaluate all repos under the ./predictions folder with 10 parallel workers
+```bash
 python3 run.py --pred-path ./predictions --num-workers 10
 ```
 
-If you just want to evaluate a single repo, use the follwoing command:
+To evaluate one repository:
 
-```shell
+```bash
 python3 run.py --pred-path ./predictions --num-workers 10 --repo agents
 ```
 
-The results will be generated under the prediction folders, for example:
-
-```shell
-predictions/agents/agents_result_dict.pkl
-predictions/agents/agents_result_w_exact.csv
-```
-
-The `.pkl` file is a cache file that stores all the results of mypy analysis while the evaluation results could be seen in the `.csv` file, for example:
-
-```csv
-repo_name,total_vars,overall_score,overall_score_wo_missing,overall_score_exact,overall_score_wo_missing_exact,missing_ratio,depth_1_score,depth_2_score,depth_3_score,depth_4_score,depth_5_score,depth_1_score_exact,depth_2_score_exact,depth_3_score_exact,depth_4_score_exact,depth_5_score_exact,repo_a_consistency,repo_b_consistency,lower_than_5_average,lower_than_10_average,lower_than_5_average_exact,lower_than_10_average_exact
-agents,1956,0.7743,0.8825,0.7076,0.8065,0.1227,0.7660,0.8140,0.6947,0.0000,N/A,0.7112,0.7200,0.5111,0.0000,N/A,71,339,0.7533,0.7407,0.6923,0.6816
-```
-
-These fields are:
-
-* `repo_name`: The name of the evaluated repository
-* `total_vars`: The total number of variables in the evaluation
-* `overall_score`: The overall TypySim score
-* `overall_score_wo_missing`: The overall TypySim score without variables whose predictions are missing
-* `overall_score_exact`: The overall exact matching score
-* `overall_score_wo_missing_exact`: The overall exact matching score without variables whose predictions are missing
-* `missing_ratio`: The ratio of variables whose predictions are missing
-* `depth_1_score`: The TypySim score for variables with their ground truth type annotation has depth 1
-* `depth_2_score`: The TypySim score for variables with their ground truth type annotation has depth 2
-* `depth_3_score`: The TypySim score for variables with their ground truth type annotation has depth 3
-* `depth_4_score`: The TypySim score for variables with their ground truth type annotation has depth 4
-* `depth_5_score`: The TypySim score for variables with their ground truth type annotation has depth 5
-* `depth_1_score_exact`: The exact matching score for variables with their ground truth type annotation has depth 1
-* `depth_2_score_exact`: The exact matching score for variables with their ground truth type annotation has depth 2
-* `depth_3_score_exact`: The exact matching score for variables with their ground truth type annotation has depth 3
-* `depth_4_score_exact`: The exact matching score for variables with their ground truth type annotation has depth 4
-* `depth_5_score_exact`: The exact matching score for variables with their ground truth type annotation has depth 5
-* `repo_a_consistency`: The TypeCheck score (number of mypy check errors) for the original repository
-* `repo_b_consistency`: The TypeCheck score (number of mypy check errors) for the predicted repository
-* `lower_than_5_average`: The average TypySim score of variables whose frequency is lower than 5 in the original repository
-* `lower_than_10_average`: The average TypySim score of variables whose frequency is lower than 10 in the original repository
-* `lower_than_5_average_exact`: The average exact matching score of variables whose frequency is lower than 5 in the original repository
-* `lower_than_10_average_exact`: The average exact matching score of variables whose frequency is lower than 10 in the original repository
-
-where the depth of a type is defined as the number of levels in the type hierarchy, for example, `int` has depth 1, `List[int]` has depth 2, `List[List[int]]` has depth 3, etc.
-
 ## Citation
 
-If you found this repo is useful for your research, please consider citing our research paper:
+If you use the original benchmark, cite:
 
-```
+```bibtex
 @inproceedings{
   dong2025typybench,
   title={TypyBench: Evaluating {LLM} Type Inference for Untyped Python Repositories},
-  author={Honghua Dong and Jiacheng Yang and Xun Deng and Yuhe Jiang and Gennady Pekhimenko and Fan Long and Xujie Si},
+  author={Honghua Dong and Jiacheng Yang and Xun Deng and Yuhe Jiang and Gennady Pekhimenko and Xujie Si},
   booktitle={Forty-second International Conference on Machine Learning},
   year={2025},
   url={https://openreview.net/forum?id=xl9sv9vEDy}
@@ -100,4 +121,4 @@ If you found this repo is useful for your research, please consider citing our r
 
 ## License
 
-Please refer to the [LICENSE](LICENSE) file.
+See the [LICENSE](LICENSE) file.
