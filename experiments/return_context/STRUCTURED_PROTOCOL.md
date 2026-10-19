@@ -1,0 +1,12 @@
+# Structured return-memory replication on fresh dev repositories
+
+The earlier full-definition comparison on Flask, Typer, and pre-commit produced 43 evaluable held-out return types: A exact 32, B exact 33, B-only 3, A-only 2 (McNemar p = 1.0). B used 4,645 more input tokens. Those repositories and outcomes are development evidence for this new protocol; they are not pooled into its held-out score.
+
+Protocol fixed before cloud inference or typed-reference inspection on the new cohort:
+
+1. Use only stripped `pdm`, `manim`, and `capa` dev repositories. Select the first 60 unique imported top-level callee functions by the deterministic SHA-256 ranking in `select.py`; the first six are a format smoke test, the remaining 54 are held out. One caller per callee. No `original_repo` path may be read during selection, memory construction, or inference.
+2. Arm A receives the same caller, import, and target-function question as the earlier protocol. Arm B receives exactly A plus a deterministic, at-most-1,000-character return-behavior memory derived from the callee's stripped AST: decorators, return/yield expressions, and assignments to names returned. If there is no explicit return or yield, the memory states that fact. It includes source path and line numbers, but no typed reference or previous model response. Both arms use `gpt-5.4-mini`, temperature zero, identical JSON output format, and one attempt per case. Save response IDs, prompt and memory hashes, usage, validity, and latency.
+3. Freeze both arms before extracting typed reference trees. Score exact AST-normalized return-type agreement against each callee's typed return annotation; missing reference annotations are reported as unevaluable. Invalid model output counts incorrect. Primary held-out result is the paired table and exact two-sided McNemar test. Secondary outcomes are endpoint-reported tokens and latency. The smoke set is excluded from significance claims.
+4. A research report is warranted only if at least 20 held-out cases are evaluable, B–A exact accuracy is positive, and McNemar p < 0.05. Otherwise preserve artifacts and state the negative or inconclusive result without claiming a proven retrieval benefit. This test can motivate a later cost-aware trigger, but it does not itself train or validate one.
+
+The structured memory is a fixed read representation, not hand-written case hints. No case is selected or dropped based on model predictions or reference types.

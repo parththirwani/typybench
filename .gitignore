@@ -179,3 +179,8 @@ cython_debug/
 
 # data folder
 /data
+
+# experiment runs
+experiments/error_to_context/runs/
+experiments/return_context/runs/
+experiments/parameter_context/runs/
