@@ -41,7 +41,7 @@ least 5% below always-B. Report A, B, trigger, token totals, trigger rate,
 discordants, and the previous negative studies regardless of outcome. Do not
 revise the rule after scoring these cases.
 
-This remains a type-inference proxy, not a coding-agent repair result or an
+This remains a type-inference proxy, not an automated repair result or an
 official TypyBench TypeSim/TypeCheck score. Function IDs are disjoint, but
 repositories overlap with the development cohorts. The longer-caller sample
 may have a different difficulty distribution and should be labeled as such.

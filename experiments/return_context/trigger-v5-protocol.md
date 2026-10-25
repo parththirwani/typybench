@@ -54,4 +54,4 @@ cohort's policy.
 
 Previous v2, v3, and v4 runs informed this policy and are development data.
 The result is a function-level return-type inference proxy, not an official
-TypyBench TypeSim or TypeCheck score or evidence about coding-agent repair.
+TypyBench TypeSim or TypeCheck score or evidence about automated repair.

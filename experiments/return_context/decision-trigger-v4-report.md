@@ -40,7 +40,7 @@ study and reused unchanged here; the v4 manifest records its SHA-256 hash.
 
 ## Protocol and audit trail
 
-The [v4 protocol](TRIGGER_V4_PROTOCOL.md) fixed the rule, eight new
+The [v4 protocol](trigger-v4-protocol.md) fixed the rule, eight new
 repositories, source-only selection, model, paired prompts, success gate, and
 reference isolation before this run. `select_candidates` found 125 unique
 top-level callees with cross-file callers in poetry, rich, flake8, nicegui,
@@ -94,11 +94,11 @@ The next research step is to replace this hand-written rule with a small,
 cost-sensitive decision model. Its input should remain available before
 expensive retrieval or generation. Its outcome should reward correction
 quality and charge for memory tokens, latency, and escalation. The model
-should be tested on newly held-out repositories and then on genuine coding-
-agent repair trajectories, where memory is written from verified or failed
-repairs. That is where the user's larger read/write memory proposal must be
+should be tested on newly held-out repositories and then on genuine repair
+trajectories, where memory is written from verified or failed
+repairs. That is where a larger read/write memory design must be
 validated. The current study does not prove a graph decoder, reinforcement-
-learning post-training, or a coding-agent repair benefit.
+learning post-training, or an automated repair benefit.
 
 ## Earlier results remain part of the record
 
@@ -110,4 +110,4 @@ gained only one exact match over A (p = 1.0). The combined v3 trigger then
 failed its longer-caller test: 61 versus 56 exact matches, p = 0.227, and
 only 2.9% input-token savings against B. This v4 test reused that same v3
 rule on new repositories; it was not selected by looking at v4 reference
-answers. Full earlier details are in the [prior report](DECISION_TRIGGER_REPORT.md).
+answers. Full earlier details are in the [prior report](decision-trigger-initial-report.md).

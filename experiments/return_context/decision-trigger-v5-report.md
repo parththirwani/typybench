@@ -51,7 +51,7 @@ selected functions lacked an annotated reference.
 
 ## Audit trail and next step
 
-The [locked protocol](TRIGGER_V5_PROTOCOL.md), [manifest](runs/trigger_v5_holdout_20261020/manifest.json),
+The [locked protocol](trigger-v5-protocol.md), [manifest](runs/trigger_v5_holdout_20261020/manifest.json),
 [frozen predictions](runs/trigger_v5_holdout_20261020/predictions_frozen.json),
 [reference extraction record](runs/trigger_v5_holdout_20261020/extraction_manifest.json),
 and [scores](runs/trigger_v5_holdout_20261020/v5_scores.json) preserve the run.

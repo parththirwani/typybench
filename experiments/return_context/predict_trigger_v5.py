@@ -20,7 +20,7 @@ from .trigger_v5 import choose_action
 
 COHORT = ("supervision", "gpt4free", "paper-qa", "vllm", "agents", "private-gpt")
 ARCHIVE_SHA256 = "312b0885a208849ee0225d8fc77f3c6a14df3c7477a67d7a1715d37d1dea239a"
-CODE_FILES = ("TRIGGER_V5_PROTOCOL.md", "trigger_v5.py", "explore_static_types.py",
+CODE_FILES = ("trigger-v5-protocol.md", "trigger_v5.py", "explore_static_types.py",
               "trigger_v3.py", "select.py", "memory.py", "predict.py",
               "predict_structured.py", "predict_trigger_v5.py")
 

@@ -19,7 +19,7 @@ from .trigger_v6 import choose_action
 
 COHORT = ("DB-GPT", "phidata", "taipy", "vnpy", "gpt-pilot",
           "LLaMA-Factory", "Pillow")
-CODE_FILES = ("TRIGGER_V6_PROTOCOL.md", "trigger_v6.py", "trigger_v5.py",
+CODE_FILES = ("trigger-v6-protocol.md", "trigger_v6.py", "trigger_v5.py",
               "explore_static_types.py", "trigger_v3.py", "select.py", "memory.py",
               "predict.py", "predict_structured.py", "predict_trigger_v5.py",
               "predict_trigger_v6.py")

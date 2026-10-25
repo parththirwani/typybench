@@ -40,5 +40,5 @@ report failure without revising this holdout's rule.
 
 This is a function-level return-type inference proxy for selective explicit
 memory. It is not an official TypyBench TypeSim or TypeCheck score and does not
-demonstrate a coding-agent repair benefit. The earlier negative trigger tests
+demonstrate an automated repair benefit. The earlier negative trigger tests
 remain part of the full evidence record.

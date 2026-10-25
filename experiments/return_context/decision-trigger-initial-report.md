@@ -51,7 +51,7 @@ seconds for B; lower token use did not lower aggregate latency in this run.
    105 paired, evaluable cases. Strict AST-normalized type-string equality was
    the outcome.
 
-The [frozen protocol](TRIGGER_V2_PROTOCOL.md), [selection and manifest](runs/trigger_v2_holdout_20261019/manifest.json), [paired scores](runs/trigger_v2_holdout_20261019/scores.json), and [trigger scores](runs/trigger_v2_holdout_20261019/trigger_v2_scores.json) preserve the method and results. Recompute both scores without overwriting the archive with:
+The [frozen protocol](trigger-v2-protocol.md), [selection and manifest](runs/trigger_v2_holdout_20261019/manifest.json), [paired scores](runs/trigger_v2_holdout_20261019/scores.json), and [trigger scores](runs/trigger_v2_holdout_20261019/trigger_v2_scores.json) preserve the method and results. Recompute both scores without overwriting the archive with:
 
 ```sh
 .venv/bin/python - <<'PY'
@@ -88,7 +88,7 @@ PY
   cases. Of 76 evaluable cases, A scored 56, B scored 63, and the trigger
   scored 61. The trigger's paired p-value against A was 0.2266 and it saved
   only 2.9% input tokens against B. It failed its frozen gate. See the
-  [v3 protocol](TRIGGER_V3_PROTOCOL.md) and [v3 scores](runs/trigger_v3_holdout_20261019/trigger_v3_scores.json).
+  [v3 protocol](trigger-v3-protocol.md) and [v3 scores](runs/trigger_v3_holdout_20261019/trigger_v3_scores.json).
 
 ## Interpretation and research use
 
@@ -113,7 +113,7 @@ to predict when the expected error reduction justifies memory injection.
 Future evaluation should pre-register a new repository-level holdout, compare
 against both never and always retrieving, and report accuracy, tokens, and
 selective-policy regret. These results do not prove that a graph decoder,
-reinforcement-learning post-training, or coding-agent repair memory will work;
+reinforcement-learning post-training, or repair memory will work;
 those remain separate research questions.
 
 No credential value appears in the saved artifacts or this report. One earlier

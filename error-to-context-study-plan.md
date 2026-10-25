@@ -1,12 +1,12 @@
 # Error-to-context retrieval: first experiment
 
-The implementation contract, evaluation rules, and agent handoff prompt are in [the experiment spec](experiments/error_to_context/EXPERIMENT_SPEC.md).
+The implementation contract and evaluation rules are in [the experiment spec](experiments/error_to_context/error-to-context-experiment-spec.md).
 
 ## Research question
 
 When `mypy` reports a type error in an LLM-annotated Python repository, does showing the model the relevant definition from another file improve a single correction attempt over showing the error alone?
 
-This is a small experiment on top of TypyBench. TypyBench supplies stripped repositories, typed reference repositories, and evaluation code. Its published repository does **not** include a type-prediction agent or an iterative correction loop, so those pieces must be added.
+This is a small experiment on top of TypyBench. TypyBench supplies stripped repositories, typed reference repositories, and evaluation code. Its published repository does **not** include type prediction or an iterative correction loop, so those pieces must be added.
 
 ## Current setup
 

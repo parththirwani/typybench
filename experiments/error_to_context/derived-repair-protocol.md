@@ -1,4 +1,4 @@
-# Paired repair of model-created type errors
+# Paired repair of annotation-induced type errors
 
 This exploratory pilot uses the 90 caller-only parameter predictions frozen in `experiments/parameter_context/runs/holdout_20261019`. An annotation-only insertion placed 84 valid predictions into four copies of `repo_without_types`. With mypy run from each repository root and `--explicit-package-bases`, Sphinx has eight new `arg-type` diagnostics and Gradio has eleven. Source-only resolution and deduplication leave five Sphinx and four Gradio parameter repair sites. The selection files are `sphinx_derived_20261019/selected_v2.json` and `gradio_derived_20261019/selected_v2.json` under the error-to-context runs directory. These nine sites are fixed before correction calls.
 

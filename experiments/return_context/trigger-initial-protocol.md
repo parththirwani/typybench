@@ -50,4 +50,4 @@ accuracy additionally requires p < 0.05 for the trigger-versus-A paired test.
 The original nine-case mypy annotation-repair pilot remains a separate negative
 result. Return-type prediction here is a proxy for choosing when explicit
 knowledge-based memory is useful; it is not an official TypyBench score and
-does not demonstrate a coding-agent repair benefit.
+does not demonstrate an automated repair benefit.

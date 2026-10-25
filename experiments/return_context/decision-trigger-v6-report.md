@@ -2,7 +2,7 @@
 
 20 October 2026. This is a function-level return-type inference study derived
 from the [official TypyBench dataset](https://github.com/typybench/typybench).
-The policy and [protocol](TRIGGER_V6_PROTOCOL.md) were fixed before inference
+The policy and [protocol](trigger-v6-protocol.md) were fixed before inference
 and before typed references for this cohort were extracted. Six previously
 unused repositories contributed selected cases: DB-GPT, phidata, taipy,
 gpt-pilot, LLaMA-Factory, and Pillow. The source-only selector found no
@@ -50,7 +50,7 @@ The benchmark compares strict return-annotation strings after AST
 normalization; equivalent aliases can score differently. Local AST analysis,
 source indexing, and reference-free memory construction are not counted in
 cloud tokens. The study does not measure wall-clock savings of a deployed
-system, official TypyBench TypeSim/TypeCheck, or coding-agent repair quality.
+system, official TypyBench TypeSim/TypeCheck, or automated repair quality.
 
 ## Audit trail and interpretation
 
@@ -68,5 +68,5 @@ always-memory's exact-match count on another fresh cohort. These are
 different policies and cohorts, so their accuracy claims should not be
 combined. The next useful test should predeclare an acceptable accuracy-loss
 margin and validate it on further unseen repositories, or move to verified
-coding-agent repair trajectories where memory read decisions are the target
+repair trajectories where memory read decisions are the target
 behavior.

@@ -34,7 +34,7 @@ The static policy produced 41 direct answers. Twenty-eight of those had evaluabl
 
 The 33.71% saving is a deployment-cost estimate. During evaluation, the experiment ran both model arms for every case so that it could measure counterfactual accuracy and token use. Local AST parsing and source indexing are not included in the cloud-token totals.
 
-The four-case accuracy gain over no memory was not statistically significant in this cohort, with a two-sided exact McNemar p-value of 0.344. Matching the always-memory total does not establish formal equivalence. The study also does not measure official TypyBench TypeSim or TypeCheck scores, wall-clock latency, or coding-agent repair quality.
+The four-case accuracy gain over no memory was not statistically significant in this cohort, with a two-sided exact McNemar p-value of 0.344. Matching the always-memory total does not establish formal equivalence. The study also does not measure official TypyBench TypeSim or TypeCheck scores, wall-clock latency, or automated repair quality.
 
 ## Earlier source-signal result
 
@@ -51,10 +51,10 @@ experiments/error_to_context/        Type-error and repair experiments
 
 The main reports are:
 
-- [Four-policy comparison](experiments/return_context/FOUR_POLICY_COMPARISON_REPORT.md)
-- [v6 selective-memory report](experiments/return_context/DECISION_TRIGGER_V6_REPORT.md)
-- [v4 source-signal report](experiments/return_context/DECISION_TRIGGER_V4_REPORT.md)
-- [v6 protocol](experiments/return_context/TRIGGER_V6_PROTOCOL.md)
+- [Four-policy comparison](experiments/return_context/four-policy-comparison-report.md)
+- [v6 selective-memory report](experiments/return_context/decision-trigger-v6-report.md)
+- [v4 source-signal report](experiments/return_context/decision-trigger-v4-report.md)
+- [v6 protocol](experiments/return_context/trigger-v6-protocol.md)
 
 ## Reproducing the return-context analysis
 

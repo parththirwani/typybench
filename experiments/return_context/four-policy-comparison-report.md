@@ -79,14 +79,14 @@ memory prompts. The four-way table supports a cloud-token result: the
 static-plus-selective policy used about one-third fewer input tokens than
 always memory while achieving the same number of exact answers on this
 cohort. It does not show a statistically established accuracy advantage over
-no memory, formal non-inferiority to always memory, or a benefit for coding-
-agent repair. A useful next test would set an acceptable accuracy-loss margin
+no memory, formal non-inferiority to always memory, or a benefit for automated
+repair. A useful next test would set an acceptable accuracy-loss margin
 in advance and evaluate the four policies on another repository-disjoint
-cohort, then measure full latency and repair outcomes on agent trajectories.
+cohort, then measure full latency and repair outcomes.
 
 ## Sources and reproducibility
 
-- [v6 report](DECISION_TRIGGER_V6_REPORT.md) and [locked protocol](TRIGGER_V6_PROTOCOL.md)
-- [v4 report](DECISION_TRIGGER_V4_REPORT.md) and [older source-signal rule](trigger_v3.py)
+- [v6 report](decision-trigger-v6-report.md) and [locked protocol](trigger-v6-protocol.md)
+- [v4 report](decision-trigger-v4-report.md) and [older source-signal rule](trigger_v3.py)
 - [v6 frozen predictions](runs/trigger_v6_holdout_20261020/predictions_frozen.json), [selection](runs/trigger_v6_holdout_20261020/selection.json), and [scores](runs/trigger_v6_holdout_20261020/v6_scores.json)
 - The same-cohort replay uses `analyze(run_dir, chooser=choose_arm)` from `analyze_v5_development.py` and `trigger_v3.py` on the frozen v6 run directory.

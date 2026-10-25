@@ -69,7 +69,7 @@ def main() -> int:
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "repositories": COHORT, "cases": len(cases),
         "selection_sha256": _hash(selection),
-        "protocol_sha256": _hash((Path(__file__).parent / "TRIGGER_V4_PROTOCOL.md").read_bytes()),
+        "protocol_sha256": _hash((Path(__file__).parent / "trigger-v4-protocol.md").read_bytes()),
         "trigger_code_sha256": _hash((Path(__file__).parent / "trigger_v3.py").read_bytes()),
         "git_head": head, "model": client.model,
         "endpoint_host": urlparse(client.base_url).hostname,

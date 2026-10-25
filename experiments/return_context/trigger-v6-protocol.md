@@ -43,4 +43,4 @@ even if the gate passes; lack of a significant difference is not a formal
 non-inferiority result. A failed gate stays a failure for this cohort.
 
 This study tests a function-level return-type inference proxy. It does not
-evaluate official TypyBench TypeSim/TypeCheck or coding-agent repair.
+evaluate official TypyBench TypeSim/TypeCheck or automated repair.

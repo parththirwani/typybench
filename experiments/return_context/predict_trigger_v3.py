@@ -82,7 +82,7 @@ def main() -> int:
         "caller_char_limit": CALLER_CHARS,
         "cases": len(cases), "selection_sha256": _hash(selection),
         "excluded_selection_sha256": previous_hashes,
-        "protocol_sha256": _hash((Path(__file__).parent / "TRIGGER_V3_PROTOCOL.md").read_bytes()),
+        "protocol_sha256": _hash((Path(__file__).parent / "trigger-v3-protocol.md").read_bytes()),
         "trigger_code_sha256": _hash((Path(__file__).parent / "trigger_v3.py").read_bytes()),
         "git_head": head, "model": client.model,
         "endpoint_host": urlparse(client.base_url).hostname,
